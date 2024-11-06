@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Days of the Week -->
+    <string-array name="days_of_week">
+        <item>Sunday</item>
+        <item>Monday</item>
+        <item>Tuesday</item>
+        <item>Wednesday</item>
+        <item>Thursday</item>
+        <item>Friday</item>
+        <item>Saturday</item>
+    </string-array>
+
+    <!-- Types of Class -->
+    <string-array name="class_types">
+        <item>Flow Yoga</item>
+        <item>Aerial Yoga</item>
+        <item>Family Yoga</item>
+    </string-array>
+
+    <!-- Difficulty -->
+    <string-array name="difficulty_levels">
+        <item>Beginner</item>
+        <item>Intermediate</item>
+        <item>Professional</item>
+    </string-array>
+</resources>

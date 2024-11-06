@@ -1,0 +1,31 @@
+<resources>
+    <!--  String Values  -->
+    <string name="app_name">Universal YOGA(Admin)</string>
+    <string name="cc_capacity">Number of Students*</string>
+    <string name="cc_time_of_course">Course Time*</string>
+    <string name="cc_duration">Duration* (mins)</string>
+    <string name="cc_price_per_class">Class Price* (£)</string>
+
+    <!--  Activities of Class   -->
+    <string name="class_name">Classes</string>
+    <string name="class_date_of_class">Class Date*</string>
+    <string name="class_teacher">Teacher Name*</string>
+    <string name="class_comment">Comment</string>
+    <string name="class_optional">Optional</string>
+
+    <!--  Controls  -->
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+    <string name="reset">Reset</string>
+    <string name="save">Save</string>
+    <string name="update">Update</string>
+
+    <!-- Dialog Buttons Texts -->
+    <string name="ok">OK</string>
+    <string name="cancel">CANCEL</string>
+
+    <!-- Search Filters -->
+    <string name="filtered_by">Filtered By</string>
+    <string name="date">Select Date</string>
+    <string name="day_of_week">Day Of Week</string>
+</resources>

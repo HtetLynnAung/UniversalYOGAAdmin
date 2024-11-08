@@ -64,7 +64,7 @@ public class CourseDetailActivity extends AppCompatActivity implements ClassMana
         getSupportActionBar().setTitle("Course Detail");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        tvName = findViewById(R.id.tvNameTime);
+        tvName = findViewById(R.id.tvDayTime);
         tvCapacity = findViewById(R.id.tvPplCount);
         tvPrice = findViewById(R.id.tvCoursePrice);
         tvDuration = findViewById(R.id.tvTime);

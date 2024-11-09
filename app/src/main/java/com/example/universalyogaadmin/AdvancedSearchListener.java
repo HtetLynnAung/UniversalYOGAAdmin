@@ -1,5 +1,5 @@
 package com.example.universalyogaadmin;
 
-public interface FilterListener {
+public interface AdvancedSearchListener {
     void search(String date, String dayOfWeek);
 }

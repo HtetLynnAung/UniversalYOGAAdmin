@@ -1,6 +1,6 @@
 package com.example.universalyogaadmin.model.api;
 
-public class YogaClassVO {
+public class YogaClassRequestBody {
     private int id;
     private int courseID;
     private String date;
@@ -8,7 +8,7 @@ public class YogaClassVO {
     private String comment;
     private String day;
 
-    public YogaClassVO(int id, int courseID, String date, String teacher, String comment, String day) {
+    public YogaClassRequestBody(int id, int courseID, String date, String teacher, String comment, String day) {
         this.id = id;
         this.courseID = courseID;
         this.date = date;

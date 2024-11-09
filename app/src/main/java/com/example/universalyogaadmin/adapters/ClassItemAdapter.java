@@ -1,8 +1,6 @@
-package com.example.universalyogaadmin.adapter;
+package com.example.universalyogaadmin.adapters;
 
 import android.content.Context;
-import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,24 +11,23 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.universalyogaadmin.ClassManageListener;
 import com.example.universalyogaadmin.R;
-import com.example.universalyogaadmin.activity.CourseDetailActivity;
-import com.example.universalyogaadmin.model.YogaClass;
+import com.example.universalyogaadmin.model.YogaClassVO;
 
 import java.util.ArrayList;
 
-public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHolder> {
+public class ClassItemAdapter extends RecyclerView.Adapter<ClassItemAdapter.ClassViewHolder> {
     private Context context;
-    private ArrayList<YogaClass> yogaClasses;
+    private ArrayList<YogaClassVO> yogaClassVOS;
     private ClassManageListener listener;
 
-    public ClassAdapter(Context context,ClassManageListener listener, ArrayList<YogaClass> yogaClasses) {
+    public ClassItemAdapter(Context context, ClassManageListener listener, ArrayList<YogaClassVO> yogaClassVOS) {
         this.context = context;
         this.listener = listener;
-        this.yogaClasses = yogaClasses;
+        this.yogaClassVOS = yogaClassVOS;
     }
 
-    public void updateView( ArrayList<YogaClass> yogaClasses) {
-        this.yogaClasses = yogaClasses;
+    public void updateView( ArrayList<YogaClassVO> yogaClassVOS) {
+        this.yogaClassVOS = yogaClassVOS;
         notifyDataSetChanged();
     }
 
@@ -43,25 +40,25 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHol
 
     @Override
     public void onBindViewHolder(ClassViewHolder holder, int position) {
-        YogaClass yogaClass = yogaClasses.get(position);
+        YogaClassVO yogaClassVO = yogaClassVOS.get(position);
 
         // Bind data to the view holder
-        holder.tvDate.setText(yogaClass.getDate());
-        holder.tvTeacher.setText("Teacher: " + yogaClass.getTeacher());
-        holder.tvComment.setText(yogaClass.getComment());
+        holder.tvDate.setText(yogaClassVO.getDate());
+        holder.tvTeacher.setText("Teacher: " + yogaClassVO.getTeacher());
+        holder.tvComment.setText(yogaClassVO.getComment());
 
         holder.ivEdit.setOnClickListener(v -> {
-            listener.upClass(yogaClass.getId());
+            listener.upClass(yogaClassVO.getId());
         });
 
         holder.ivDelete.setOnClickListener(v -> {
-           listener.delClass(yogaClass.getId());
+           listener.delClass(yogaClassVO.getId());
         });
     }
 
     @Override
     public int getItemCount() {
-        return yogaClasses.size();
+        return yogaClassVOS.size();
     }
 
     // ViewHolder class to hold the view for each item
@@ -80,9 +77,9 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHol
     }
 
     // Optional: Method to update the list if the data changes
-    public void updateData(ArrayList<YogaClass> newYogaClasses) {
-        yogaClasses.clear();
-        yogaClasses.addAll(newYogaClasses);
+    public void updateData(ArrayList<YogaClassVO> newYogaClassVOS) {
+        yogaClassVOS.clear();
+        yogaClassVOS.addAll(newYogaClassVOS);
         notifyDataSetChanged();
     }
 }

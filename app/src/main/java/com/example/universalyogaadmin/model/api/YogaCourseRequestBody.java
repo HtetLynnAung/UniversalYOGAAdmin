@@ -2,7 +2,7 @@ package com.example.universalyogaadmin.model.api;
 
 import java.util.List;
 
-public class YogaCourseVO {
+public class YogaCourseRequestBody {
     private int id;
     private String day;
     private String time;
@@ -13,9 +13,9 @@ public class YogaCourseVO {
     private String level;
     private String description;
     private boolean isPublished;
-    private List<YogaClassVO> yogaClasses;
+    private List<YogaClassRequestBody> yogaClasses;
 
-    public YogaCourseVO(int id, String day, String time, int capacity, int duration, double price, String type, String level, String description, boolean isPublished, List<YogaClassVO> yogaClasses) {
+    public YogaCourseRequestBody(int id, String day, String time, int capacity, int duration, double price, String type, String level, String description, boolean isPublished, List<YogaClassRequestBody> yogaClasses) {
         this.id = id;
         this.day = day;
         this.time = time;

@@ -1,4 +1,4 @@
-package com.example.universalyogaadmin.activity;
+package com.example.universalyogaadmin.activities;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
@@ -11,52 +11,57 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.example.universalyogaadmin.R;
-import com.example.universalyogaadmin.database.DatabaseHelper;
-import com.example.universalyogaadmin.model.YogaCourse;
+import com.example.universalyogaadmin.database.DBHelper;
+import com.example.universalyogaadmin.model.YogaClassVO;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CreateClass extends AppCompatActivity {
+public class EditClassActivity extends AppCompatActivity {
 
     private TextInputEditText editTextDate, editTextTeacher, editTextComment;
 
+    private int classID = -1;
     private int courseID = -1;
-
     private String dayOfWeekString = "Monday";
-
-    private DatabaseHelper databaseHelper;
+    private DBHelper DBHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_create_class);
+        setContentView(R.layout.activity_edit_class);
 
-        getSupportActionBar().setTitle("Add New Class");
+        getSupportActionBar().setTitle("Edit Class");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        editTextDate = findViewById(R.id.etDateOfClass);
-        editTextTeacher = findViewById(R.id.etTeacher);
-        editTextComment = findViewById(R.id.etComment);
-        databaseHelper = new DatabaseHelper(this);
+        setupFindViewByIds();
 
+        DBHelper = new DBHelper(this);
+
+        classID = getIntent().getIntExtra("yoga_class_id", -1);
         courseID = getIntent().getIntExtra("yoga_course_id", -1);
-        loadClassDetails(courseID);
-
+        loadClassDetails(classID);
         setUpDatePicker();
     }
 
+    private void setupFindViewByIds() {
+        editTextDate = findViewById(R.id.etDateOfClass);
+        editTextTeacher = findViewById(R.id.etTeacher);
+        editTextComment = findViewById(R.id.etComment);
+    }
+
     private void loadClassDetails(int id) {
-        YogaCourse yogaCourse = databaseHelper.getYogaCourse(id);
-        dayOfWeekString = yogaCourse.getDay();
+        YogaClassVO yogaClassVO = DBHelper.getYogaClasses(id);
+
+        dayOfWeekString = yogaClassVO.getDay();
+        editTextDate.setText(yogaClassVO.getDate());
+        editTextTeacher.setText(yogaClassVO.getTeacher());
+        editTextComment.setText(yogaClassVO.getComment());
     }
 
     private void setUpDatePicker() {
@@ -141,46 +146,38 @@ public class CreateClass extends AppCompatActivity {
     }
 
     private void validateAndSubmit() {
-        // Validate required fields
         String date = editTextDate.getText().toString();
         String teacher = editTextTeacher.getText().toString().trim();
         String comment = editTextComment.getText().toString().trim();
 
-        // Check for empty fields and show errors
         if (date.isEmpty() || teacher.isEmpty()) {
             Toast.makeText(this, "Please fill in all required fields", Toast.LENGTH_SHORT).show();
             return;
         }
-
-        // Display entered details for confirmation
         saveToDatabase(date, teacher, comment);
     }
 
     private void saveToDatabase(String date, String teacher, String comment) {
-        // Save class details to the SQLite database
-        // Implementation of database insertion goes here
-        // Add the course to the database
-        boolean isInserted = databaseHelper.addClass(courseID, date, teacher, comment, dayOfWeekString);
+        YogaClassVO yogaClassVO = new YogaClassVO(classID, courseID, date, teacher, comment, "");
+        boolean isInserted = DBHelper.updateClass(classID, yogaClassVO);
         if (isInserted) {
-            Toast.makeText(this, "Class added successfully!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Class updated successfully!", Toast.LENGTH_SHORT).show();
             finish();  // Close activity and go back to the list
         } else {
-            Toast.makeText(this, "Failed to add course.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Failed to update course.", Toast.LENGTH_SHORT).show();
         }
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.save_menu, menu);
+        inflater.inflate(R.menu.update_menu, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle item selection.
-        Log.i("LOG", "search" + item.getItemId());
-
         if(item.getItemId() == R.id.save) {
             validateAndSubmit();
             return true;
@@ -192,4 +189,5 @@ public class CreateClass extends AppCompatActivity {
         }
 
     }
+
 }

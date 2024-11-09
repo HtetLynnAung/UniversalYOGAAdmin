@@ -1,4 +1,4 @@
-package com.example.universalyogaadmin.activity;
+package com.example.universalyogaadmin.activities;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -17,9 +17,9 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.universalyogaadmin.*;
-import com.example.universalyogaadmin.adapter.CourseAdapter;
-import com.example.universalyogaadmin.database.DatabaseHelper;
-import com.example.universalyogaadmin.model.YogaCourse;
+import com.example.universalyogaadmin.adapters.CourseItemAdapter;
+import com.example.universalyogaadmin.database.DBHelper;
+import com.example.universalyogaadmin.model.YogaCourseVO;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -27,44 +27,29 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
 
     private RecyclerView recyclerViewClasses;
-    private CourseAdapter adapter;
-    private DatabaseHelper databaseHelper;
+    private CourseItemAdapter adapter;
+    private DBHelper DBHelper;
     private FloatingActionButton fabAddCourse;
 
 
     // Retrieve the data as an ArrayList
-    ArrayList<YogaCourse> yogaCourses;
+    ArrayList<YogaCourseVO> yogaCoursVOS;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
 
+        setupFindViewByIds();
 
-        // Initialize components
-        recyclerViewClasses = findViewById(R.id.recyclerViewClasses);
-        fabAddCourse = findViewById(R.id.fabAddCourse);
-        databaseHelper = new DatabaseHelper(this);
+        DBHelper = new DBHelper(this);
 
-       setUpRecyclerView();
+        setUpRecyclerView();
+
         fabAddCourse.setImageTintList(ColorStateList.valueOf(Color.WHITE));
-        // Handle Floating Action Button click to add new course
-        fabAddCourse.setOnClickListener(view -> {
-            Intent intent = new Intent(this, CreateCourse.class);
-            startActivity(intent);
-        });
+
+       setOnClickListener();
     }
-
-
-    private void setUpRecyclerView() {
-        yogaCourses = new ArrayList<>();
-        adapter = new CourseAdapter(this, yogaCourses);
-        RecyclerView.LayoutManager layoutManager = new GridLayoutManager( this, 1);
-        recyclerViewClasses.setLayoutManager(layoutManager);
-        recyclerViewClasses.setItemAnimator(new DefaultItemAnimator());
-        recyclerViewClasses.setAdapter(adapter);
-    }
-
 
     @Override
     protected void onResume() {
@@ -73,9 +58,30 @@ public class MainActivity extends AppCompatActivity {
         updateCourseData();
     }
 
+    private void setupFindViewByIds() {
+        recyclerViewClasses = findViewById(R.id.recyclerViewClasses);
+        fabAddCourse = findViewById(R.id.fabAddCourse);
+    }
+
+    private void setUpRecyclerView() {
+        yogaCoursVOS = new ArrayList<>();
+        adapter = new CourseItemAdapter(this, yogaCoursVOS);
+        RecyclerView.LayoutManager layoutManager = new GridLayoutManager( this, 1);
+        recyclerViewClasses.setLayoutManager(layoutManager);
+        recyclerViewClasses.setItemAnimator(new DefaultItemAnimator());
+        recyclerViewClasses.setAdapter(adapter);
+    }
+
+    private void setOnClickListener() {
+        fabAddCourse.setOnClickListener(view -> {
+            Intent intent = new Intent(this, AddCourse.class);
+            startActivity(intent);
+        });
+    }
+
     private void updateCourseData() {
-        yogaCourses = databaseHelper.getAllYogaCourses();
-        adapter.updateView(yogaCourses);
+        yogaCoursVOS = DBHelper.getAllYogaCourses();
+        adapter.updateView(yogaCoursVOS);
     }
 
 
@@ -94,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
         builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // User taps OK button.
-                databaseHelper.resetDatabase();
+                DBHelper.resetDatabase();
                 updateCourseData();
             }
         });

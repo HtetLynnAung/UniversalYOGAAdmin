@@ -1,32 +1,31 @@
-package com.example.universalyogaadmin.adapter;
+package com.example.universalyogaadmin.adapters;
 
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.universalyogaadmin.R;
-import com.example.universalyogaadmin.activity.CourseDetailActivity;
-import com.example.universalyogaadmin.model.YogaClass;
+import com.example.universalyogaadmin.activities.CourseDetailActivity;
+import com.example.universalyogaadmin.model.YogaClassVO;
 
 import java.util.ArrayList;
 
-public class SearchClassAdapter extends RecyclerView.Adapter<SearchClassAdapter.ClassViewHolder> {
+public class SearchClassItemAdapter extends RecyclerView.Adapter<SearchClassItemAdapter.ClassViewHolder> {
     private Context context;
-    private ArrayList<YogaClass> yogaClasses;
+    private ArrayList<YogaClassVO> yogaClassVOS;
 
-    public SearchClassAdapter(Context context, ArrayList<YogaClass> yogaClasses) {
+    public SearchClassItemAdapter(Context context, ArrayList<YogaClassVO> yogaClassVOS) {
         this.context = context;
-        this.yogaClasses = yogaClasses;
+        this.yogaClassVOS = yogaClassVOS;
     }
 
-    public void updateView( ArrayList<YogaClass> yogaClasses) {
-        this.yogaClasses = yogaClasses;
+    public void updateView( ArrayList<YogaClassVO> yogaClassVOS) {
+        this.yogaClassVOS = yogaClassVOS;
         notifyDataSetChanged();
     }
 
@@ -39,16 +38,16 @@ public class SearchClassAdapter extends RecyclerView.Adapter<SearchClassAdapter.
 
     @Override
     public void onBindViewHolder(ClassViewHolder holder, int position) {
-        YogaClass yogaClass = yogaClasses.get(position);
+        YogaClassVO yogaClassVO = yogaClassVOS.get(position);
 
         // Bind data to the view holder
-        holder.tvDate.setText(yogaClass.getDate());
-        holder.tvTeacher.setText("Teacher: " + yogaClass.getTeacher());
-        holder.tvComment.setText(yogaClass.getComment());
+        holder.tvDate.setText(yogaClassVO.getDate());
+        holder.tvTeacher.setText("Teacher: " + yogaClassVO.getTeacher());
+        holder.tvComment.setText(yogaClassVO.getComment());
 
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, CourseDetailActivity.class);
-            intent.putExtra("yoga_course_id", yogaClass.getCourseID());
+            intent.putExtra("yoga_course_id", yogaClassVO.getCourseID());
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(intent);
         });
@@ -56,7 +55,7 @@ public class SearchClassAdapter extends RecyclerView.Adapter<SearchClassAdapter.
 
     @Override
     public int getItemCount() {
-        return yogaClasses.size();
+        return yogaClassVOS.size();
     }
 
     // ViewHolder class to hold the view for each item
@@ -72,9 +71,9 @@ public class SearchClassAdapter extends RecyclerView.Adapter<SearchClassAdapter.
     }
 
     // Optional: Method to update the list if the data changes
-    public void updateData(ArrayList<YogaClass> newYogaClasses) {
-        yogaClasses.clear();
-        yogaClasses.addAll(newYogaClasses);
+    public void updateData(ArrayList<YogaClassVO> newYogaClassVOS) {
+        yogaClassVOS.clear();
+        yogaClassVOS.addAll(newYogaClassVOS);
         notifyDataSetChanged();
     }
 }

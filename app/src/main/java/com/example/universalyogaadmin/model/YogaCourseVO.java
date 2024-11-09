@@ -1,11 +1,11 @@
 package com.example.universalyogaadmin.model;
 
-import com.example.universalyogaadmin.model.api.YogaClassVO;
-import com.example.universalyogaadmin.model.api.YogaCourseVO;
+import com.example.universalyogaadmin.model.api.YogaClassRequestBody;
+import com.example.universalyogaadmin.model.api.YogaCourseRequestBody;
 
 import java.util.List;
 
-public class YogaCourse {
+public class YogaCourseVO {
     private int id; // Add ID if needed for database operations
     private String day;
     private String time;
@@ -18,7 +18,7 @@ public class YogaCourse {
     private boolean isPublished;
 
     // Constructor
-    public YogaCourse(int id, String day, String time, int capacity, int duration, double price, String type, String level, String description, boolean isPublished) {
+    public YogaCourseVO(int id, String day, String time, int capacity, int duration, double price, String type, String level, String description, boolean isPublished) {
         this.id = id;
         this.day = day;
         this.time = time;
@@ -43,7 +43,7 @@ public class YogaCourse {
     public String getDescription() { return description; }
     public boolean getIsPublished() { return  isPublished; }
 
-    public YogaCourseVO changYogaCourseVO(List<YogaClassVO> yogaClasses) {
-        return new YogaCourseVO(id, day, time, capacity, duration, price, type, level, description, isPublished, yogaClasses);
+    public YogaCourseRequestBody changYogaCourseVO(List<YogaClassRequestBody> yogaClasses) {
+        return new YogaCourseRequestBody(id, day, time, capacity, duration, price, type, level, description, isPublished, yogaClasses);
     }
 }

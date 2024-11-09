@@ -7,17 +7,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.example.universalyogaadmin.FilterListener;
+import com.example.universalyogaadmin.AdvancedSearchListener;
 import com.example.universalyogaadmin.R;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.textfield.TextInputEditText;
@@ -32,7 +29,7 @@ public class FilterBottomSheet extends BottomSheetDialogFragment {
 
     ImageView ivBack;
 
-    FilterListener listener;
+    AdvancedSearchListener listener;
 
     Button tvChoose;
 
@@ -40,7 +37,7 @@ public class FilterBottomSheet extends BottomSheetDialogFragment {
 
     private Spinner spinnerDayOfWeek;
 
-    public FilterBottomSheet(FilterListener listener) {
+    public FilterBottomSheet(AdvancedSearchListener listener) {
         this.listener = listener;
     }
 

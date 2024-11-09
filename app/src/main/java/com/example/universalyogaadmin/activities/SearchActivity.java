@@ -1,6 +1,5 @@
-package com.example.universalyogaadmin.activity;
+package com.example.universalyogaadmin.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -11,26 +10,20 @@ import android.widget.TextView;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.universalyogaadmin.ClassManageListener;
-import com.example.universalyogaadmin.FilterListener;
+import com.example.universalyogaadmin.AdvancedSearchListener;
 import com.example.universalyogaadmin.R;
-import com.example.universalyogaadmin.adapter.ClassAdapter;
-import com.example.universalyogaadmin.adapter.SearchClassAdapter;
+import com.example.universalyogaadmin.adapters.SearchClassItemAdapter;
 import com.example.universalyogaadmin.bottomsheet.FilterBottomSheet;
-import com.example.universalyogaadmin.database.DatabaseHelper;
-import com.example.universalyogaadmin.model.YogaClass;
-import com.example.universalyogaadmin.model.YogaCourse;
+import com.example.universalyogaadmin.database.DBHelper;
+import com.example.universalyogaadmin.model.YogaClassVO;
 
 import java.util.ArrayList;
 
-public class SearchActivity extends AppCompatActivity implements FilterListener {
+public class SearchActivity extends AppCompatActivity implements AdvancedSearchListener {
 
     ImageView ivFilter;
 
@@ -40,13 +33,13 @@ public class SearchActivity extends AppCompatActivity implements FilterListener 
 
     RecyclerView rvPlanner;
 
-    DatabaseHelper dbHelper;
+    DBHelper dbHelper;
 
-    ArrayList<YogaClass> yogaClasses;
+    ArrayList<YogaClassVO> yogaClassVOS;
 
     String dayOfWeek = "", date = "", teacherName = "";
 
-    SearchClassAdapter classAdapter;
+    SearchClassItemAdapter classAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,16 +48,16 @@ public class SearchActivity extends AppCompatActivity implements FilterListener 
         getSupportActionBar().setTitle("");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        dbHelper = new DatabaseHelper(this);
+        dbHelper = new DBHelper(this);
 
-        defineLayout();
+        setupFindViewByIds();
 
         setOnClickListener();
 
         setUpRecyclerView();
     }
 
-    private void defineLayout() {
+    private void setupFindViewByIds() {
         svSearch = findViewById(R.id.svSearch);
         svSearch.setIconified(false);
         svSearch.requestFocus();
@@ -97,7 +90,7 @@ public class SearchActivity extends AppCompatActivity implements FilterListener 
                 // Handle query text changes
 
                 if(newText.isEmpty()) {
-                    classAdapter.updateView(yogaClasses);
+                    classAdapter.updateView(yogaClassVOS);
                 } else {
                     teacherName = newText;
                     searchClass();
@@ -109,7 +102,7 @@ public class SearchActivity extends AppCompatActivity implements FilterListener 
         svSearch.setOnCloseListener(new SearchView.OnCloseListener() {
             @Override
             public boolean onClose() {
-                classAdapter.updateView(yogaClasses);
+                classAdapter.updateView(yogaClassVOS);
                 return false;
             }
         });
@@ -121,8 +114,8 @@ public class SearchActivity extends AppCompatActivity implements FilterListener 
     }
 
     private void setUpRecyclerView() {
-        yogaClasses = new ArrayList<>();
-        classAdapter = new SearchClassAdapter(this, yogaClasses);
+        yogaClassVOS = new ArrayList<>();
+        classAdapter = new SearchClassItemAdapter(this, yogaClassVOS);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager( this, 1);
         rvPlanner.setLayoutManager(layoutManager);
         rvPlanner.setItemAnimator(new DefaultItemAnimator());
@@ -135,6 +128,7 @@ public class SearchActivity extends AppCompatActivity implements FilterListener 
                 "ModalBottomSheet");
     }
 
+    // Override methods
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection.

@@ -1,4 +1,4 @@
-package com.example.universalyogaadmin.adapter;
+package com.example.universalyogaadmin.adapters;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,23 +11,23 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.universalyogaadmin.R;
-import com.example.universalyogaadmin.activity.CourseDetailActivity;
-import com.example.universalyogaadmin.model.YogaCourse;
+import com.example.universalyogaadmin.activities.CourseDetailActivity;
+import com.example.universalyogaadmin.model.YogaCourseVO;
 
 import java.util.ArrayList;
 
-public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseViewHolder> {
+public class CourseItemAdapter extends RecyclerView.Adapter<CourseItemAdapter.CourseViewHolder> {
     private Context context;
-    private ArrayList<YogaCourse> yogaCourses;
+    private ArrayList<YogaCourseVO> yogaCoursVOS;
 
-    public CourseAdapter(Context context, ArrayList<YogaCourse> yogaCourses) {
+    public CourseItemAdapter(Context context, ArrayList<YogaCourseVO> yogaCoursVOS) {
         this.context = context;
-        this.yogaCourses = yogaCourses;
+        this.yogaCoursVOS = yogaCoursVOS;
     }
 
-    public void updateView( ArrayList<YogaCourse> yogaCourses) {
-        Log.i("DATA", yogaCourses.size() + "size");
-        this.yogaCourses = yogaCourses;
+    public void updateView( ArrayList<YogaCourseVO> yogaCoursVOS) {
+        Log.i("DATA", yogaCoursVOS.size() + "size");
+        this.yogaCoursVOS = yogaCoursVOS;
         notifyDataSetChanged();
     }
 
@@ -40,20 +40,20 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
 
     @Override
     public void onBindViewHolder(CourseViewHolder holder, int position) {
-        YogaCourse yogaCourse = yogaCourses.get(position);
+        YogaCourseVO yogaCourseVO = yogaCoursVOS.get(position);
 
         // Bind data to the view holder
-        holder.textViewDay.setText(yogaCourse.getDay());
-        holder.textViewTime.setText(yogaCourse.getTime());
-        holder.textViewCapacity.setText(yogaCourse.getCapacity()+ " Students");
-        holder.textViewDuration.setText(yogaCourse.getDuration() + " mins");
-        holder.textViewPrice.setText(yogaCourse.getPrice() + " £");
-        holder.textViewType.setText(yogaCourse.getType());
-        holder.textViewDescription.setText(yogaCourse.getDescription() != null ? yogaCourse.getDescription() : "No description");
+        holder.textViewDay.setText(yogaCourseVO.getDay());
+        holder.textViewTime.setText(yogaCourseVO.getTime());
+        holder.textViewCapacity.setText(yogaCourseVO.getCapacity()+ " Students");
+        holder.textViewDuration.setText(yogaCourseVO.getDuration() + " mins");
+        holder.textViewPrice.setText(yogaCourseVO.getPrice() + " £");
+        holder.textViewType.setText(yogaCourseVO.getType());
+        holder.textViewDescription.setText(yogaCourseVO.getDescription() != null ? yogaCourseVO.getDescription() : "No description");
 
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, CourseDetailActivity.class);
-            intent.putExtra("yoga_course_id", yogaCourse.getId());
+            intent.putExtra("yoga_course_id", yogaCourseVO.getId());
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(intent);
         });
@@ -61,7 +61,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
 
     @Override
     public int getItemCount() {
-        return yogaCourses.size();
+        return yogaCoursVOS.size();
     }
 
     // ViewHolder class to hold the view for each item
@@ -81,9 +81,9 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
     }
 
     // Optional: Method to update the list if the data changes
-    public void updateData(ArrayList<YogaCourse> newYogaCourses) {
-        yogaCourses.clear();
-        yogaCourses.addAll(newYogaCourses);
+    public void updateData(ArrayList<YogaCourseVO> newYogaCoursVOS) {
+        yogaCoursVOS.clear();
+        yogaCoursVOS.addAll(newYogaCoursVOS);
         notifyDataSetChanged();
     }
 }

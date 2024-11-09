@@ -1,15 +1,11 @@
-package com.example.universalyogaadmin.activity;
+package com.example.universalyogaadmin.activities;
 
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,13 +18,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.universalyogaadmin.ClassManageListener;
 import com.example.universalyogaadmin.R;
-import com.example.universalyogaadmin.adapter.ClassAdapter;
-import com.example.universalyogaadmin.database.DatabaseHelper;
-import com.example.universalyogaadmin.model.YogaClass;
-import com.example.universalyogaadmin.model.YogaCourse;
+import com.example.universalyogaadmin.adapters.ClassItemAdapter;
+import com.example.universalyogaadmin.database.DBHelper;
+import com.example.universalyogaadmin.model.YogaClassVO;
+import com.example.universalyogaadmin.model.YogaCourseVO;
 import com.example.universalyogaadmin.model.api.ResponseBody;
-import com.example.universalyogaadmin.model.api.YogaClassVO;
-import com.example.universalyogaadmin.model.api.YogaCourseVO;
+import com.example.universalyogaadmin.model.api.YogaClassRequestBody;
+import com.example.universalyogaadmin.model.api.YogaCourseRequestBody;
 import com.example.universalyogaadmin.network.ApiClient;
 import com.example.universalyogaadmin.network.ApiRoute;
 import com.example.universalyogaadmin.network.NetworkLiveData;
@@ -46,10 +42,10 @@ public class CourseDetailActivity extends AppCompatActivity implements ClassMana
     private Button buttonPublish, buttonEdit, buttonDel;
     Button ivAddClass;
     RecyclerView rvClass;
-    private DatabaseHelper databaseHelper;
-    ClassAdapter classAdapter;
+    private DBHelper DBHelper;
+    ClassItemAdapter classItemAdapter;
 
-    ArrayList<YogaClass> yogaClasses;
+    ArrayList<YogaClassVO> yogaClassVOS;
 
     private boolean isInternetAvailable = false;
     private boolean isPublished = false;
@@ -64,6 +60,25 @@ public class CourseDetailActivity extends AppCompatActivity implements ClassMana
         getSupportActionBar().setTitle("Course Detail");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        setupFindViewByIds();
+
+        setUpRecyclerView();
+
+        setOnClickListener();
+
+        listenInternetConnection();
+
+        courseID = getIntent().getIntExtra("yoga_course_id", -1);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadClassDetails(courseID);
+        updateClassData();
+    }
+
+    private void setupFindViewByIds() {
         tvName = findViewById(R.id.tvDayTime);
         tvCapacity = findViewById(R.id.tvPplCount);
         tvPrice = findViewById(R.id.tvCoursePrice);
@@ -74,47 +89,29 @@ public class CourseDetailActivity extends AppCompatActivity implements ClassMana
         ivAddClass = findViewById(R.id.ivAddClass);
         rvClass = findViewById(R.id.rvClass);
         buttonPublish = findViewById(R.id.buttonPublish);
-        databaseHelper = new DatabaseHelper(this);
+        DBHelper = new DBHelper(this);
         buttonEdit  = findViewById(R.id.buttonEdit);
         buttonDel = findViewById(R.id.buttonDelete);
+    }
 
-        setUpRecyclerView();
-        setOnClickListener();
-
+    private void listenInternetConnection() {
         networkLiveData = new NetworkLiveData(this);
         networkLiveData.observe(this, isConnected -> {
             isInternetAvailable = isConnected;
         });
-
-        courseID = getIntent().getIntExtra("yoga_course_id", -1);
-
-        // Set click listener for the submit button
-        buttonPublish.setOnClickListener(view -> validateAndSubmit());
-
-        // edit button click listener
-        buttonEdit.setOnClickListener(view -> goToEditActivity());
-        buttonDel.setOnClickListener(view -> createDeleteAlertDialog());
-
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        loadClassDetails(courseID);
-        updateClassData();
-    }
-
-    private void validateAndSubmit() {
+    private void checkValidationAndSummitToDB() {
         if (isInternetAvailable) {
-            if (databaseHelper.updateCourseIsPublished(courseID, true)) {
+            if (DBHelper.updateCourseIsPublished(courseID, true)) {
                 ApiRoute yogaApi = ApiClient.getClient().create(ApiRoute.class);
-                List<YogaClassVO> yogaClassesVO = new ArrayList<>();
-                for (YogaClass yogaClass : yogaClasses) {
-                    yogaClassesVO.add(yogaClass.changeYogaClassVO());
+                List<YogaClassRequestBody> yogaClassesVO = new ArrayList<>();
+                for (YogaClassVO yogaClassVO : yogaClassVOS) {
+                    yogaClassesVO.add(yogaClassVO.changeYogaClassVO());
                 }
-                YogaCourseVO yogaCourseVO = databaseHelper.getYogaCourse(courseID).changYogaCourseVO(yogaClassesVO);
+                YogaCourseRequestBody yogaCourseRequestBody = DBHelper.getYogaCourse(courseID).changYogaCourseVO(yogaClassesVO);
                 // Send request
-                Call<ResponseBody> call = yogaApi.sendYogaCourse(yogaCourseVO);
+                Call<ResponseBody> call = yogaApi.sendYogaCourse(yogaCourseRequestBody);
                 call.enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -123,7 +120,7 @@ public class CourseDetailActivity extends AppCompatActivity implements ClassMana
                             loadClassDetails(courseID);
                         } else {
                             Toast.makeText(CourseDetailActivity.this, "Failed to send yoga course!", Toast.LENGTH_SHORT).show();
-                            databaseHelper.updateCourseIsPublished(courseID, false);
+                            DBHelper.updateCourseIsPublished(courseID, false);
                         }
                     }
 
@@ -143,56 +140,53 @@ public class CourseDetailActivity extends AppCompatActivity implements ClassMana
     }
 
     private void loadClassDetails(int id) {
-        YogaCourse yogaCourse = databaseHelper.getYogaCourse(id);
-        isPublished = yogaCourse.getIsPublished();
+        YogaCourseVO yogaCourseVO = DBHelper.getYogaCourse(id);
+        isPublished = yogaCourseVO.getIsPublished();
 
         buttonPublish.setVisibility(isPublished ? View.GONE : View.VISIBLE);
-        tvName.setText(yogaCourse.getDay()+" - " + yogaCourse.getTime());
-        tvCapacity.setText(yogaCourse.getCapacity() + "");
-        tvDuration.setText(yogaCourse.getDuration() + "");
-        tvPrice.setText(yogaCourse.getPrice()+"");
-        tvYogaType.setText(yogaCourse.getType());
-        tvYogaLevel.setText(yogaCourse.getLevel());
-        tvDescription.setVisibility(yogaCourse.getDescription().isEmpty() ? View.GONE : View.VISIBLE);
-        tvDescription.setText(yogaCourse.getDescription());
+        tvName.setText(yogaCourseVO.getDay()+" - " + yogaCourseVO.getTime());
+        tvCapacity.setText(yogaCourseVO.getCapacity() + "");
+        tvDuration.setText(yogaCourseVO.getDuration() + "");
+        tvPrice.setText(yogaCourseVO.getPrice()+"");
+        tvYogaType.setText(yogaCourseVO.getType());
+        tvYogaLevel.setText(yogaCourseVO.getLevel());
+        tvDescription.setVisibility(yogaCourseVO.getDescription().isEmpty() ? View.GONE : View.VISIBLE);
+        tvDescription.setText(yogaCourseVO.getDescription());
     }
 
     private void setUpRecyclerView() {
-        yogaClasses = new ArrayList<>();
-        classAdapter = new ClassAdapter(this, this, yogaClasses);
+        yogaClassVOS = new ArrayList<>();
+        classItemAdapter = new ClassItemAdapter(this, this, yogaClassVOS);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager( this, 1);
         rvClass.setLayoutManager(layoutManager);
         rvClass.setItemAnimator(new DefaultItemAnimator());
-        rvClass.setAdapter(classAdapter);
+        rvClass.setAdapter(classItemAdapter);
     }
 
     private void updateClassData() {
-        yogaClasses = databaseHelper.getAllYogaClasses(courseID);
-        classAdapter.updateView(yogaClasses);
+        yogaClassVOS = DBHelper.getAllYogaClasses(courseID);
+        classItemAdapter.updateView(yogaClassVOS);
     }
 
     private void setOnClickListener() {
         ivAddClass.setOnClickListener(view -> {
             navigateToAddClass();
         });
+
+        // Set click listener for the submit button
+        buttonPublish.setOnClickListener(view -> checkValidationAndSummitToDB());
+
+        // edit button click listener
+        buttonEdit.setOnClickListener(view -> navigateToEditActivity());
+        // delete button click listener
+        buttonDel.setOnClickListener(view -> createDeleteAlertDialog());
+
     }
 
     private void navigateToAddClass() {
-        Intent myIntent = new Intent(CourseDetailActivity.this, CreateClass.class);
+        Intent myIntent = new Intent(CourseDetailActivity.this, AddClass.class);
         myIntent.putExtra("yoga_course_id", courseID );
         this.startActivity(myIntent);
-    }
-
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle item selection.
-        if (item.getItemId() == android.R.id.home) {
-            finish(); // or perform any custom action
-            return true;
-        } else {
-            return super.onOptionsItemSelected(item);
-        }
     }
 
     private void createDeleteAlertDialog() {
@@ -220,13 +214,7 @@ public class CourseDetailActivity extends AppCompatActivity implements ClassMana
     }
 
     private void deleteObservation() {
-        databaseHelper.deleteCourse(courseID);
-    }
-
-    @Override
-    public void delClass(int classID) {
-
-        createAlertDialog(classID);
+        DBHelper.deleteCourse(courseID);
     }
 
     private void createAlertDialog(int classID) {
@@ -235,7 +223,7 @@ public class CourseDetailActivity extends AppCompatActivity implements ClassMana
         builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // User taps OK button.
-                databaseHelper.deleteClass(classID);
+                DBHelper.deleteClass(classID);
                 updateClassData();
             }
         });
@@ -253,6 +241,18 @@ public class CourseDetailActivity extends AppCompatActivity implements ClassMana
         dialog.show();
     }
 
+    private void navigateToEditActivity(){
+        Intent myIntent = new Intent(CourseDetailActivity.this, EditCourseActivity.class);
+        myIntent.putExtra("yoga_course_id", courseID);
+        startActivity(myIntent);
+    }
+
+    //Override methods
+    @Override
+    public void delClass(int classID) {
+        createAlertDialog(classID);
+    }
+
     @Override
     public void upClass(int classID) {
         Intent intent = new Intent(CourseDetailActivity.this, EditClassActivity.class);
@@ -262,10 +262,15 @@ public class CourseDetailActivity extends AppCompatActivity implements ClassMana
         this.startActivity(intent);
     }
 
-    private void goToEditActivity(){
-        Intent myIntent = new Intent(CourseDetailActivity.this, EditCourseActivity.class);
-        myIntent.putExtra("yoga_course_id", courseID);
-        startActivity(myIntent);
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection.
+        if (item.getItemId() == android.R.id.home) {
+            finish(); // or perform any custom action
+            return true;
+        } else {
+            return super.onOptionsItemSelected(item);
+        }
     }
 }
 

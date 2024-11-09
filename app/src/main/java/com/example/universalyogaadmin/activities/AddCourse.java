@@ -1,4 +1,4 @@
-package com.example.universalyogaadmin.activity;
+package com.example.universalyogaadmin.activities;
 
 import android.app.TimePickerDialog;
 import android.os.Bundle;
@@ -13,36 +13,41 @@ import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.example.universalyogaadmin.R;
-import com.example.universalyogaadmin.database.DatabaseHelper;
-import com.example.universalyogaadmin.model.YogaCourse;
+import com.example.universalyogaadmin.database.DBHelper;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.Calendar;
 import java.util.Locale;
 
-public class EditCourseActivity extends AppCompatActivity {
+public class AddCourse extends AppCompatActivity {
 
     private Spinner spinnerDayOfWeek, spinnerClassType, spinnerDifficultyLevel;
 
     private TextInputEditText editTextTime, editTextCapacity, editTextDescription, editTextPrice, editTextDuration;
 
-    private DatabaseHelper databaseHelper;
-    private Button BtnUpdate;
-    private int courseID = -1;
+    private Button btnSave;
+
+    private DBHelper DBHelper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_edit_course);
+        setContentView(R.layout.activity_create_course);
 
-        getSupportActionBar().setTitle("Edit Class");
+        getSupportActionBar().setTitle("Add New Course");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        setupFindViewByIds();
+
+        DBHelper = new DBHelper(this);
+
+        setUpTimePicker();
+    }
+
+    private void setupFindViewByIds() {
         spinnerDayOfWeek = findViewById(R.id.spinnerDayOfWeek);
         spinnerClassType = findViewById(R.id.spinnerClassType);
         spinnerDifficultyLevel = findViewById(R.id.spinnerDifficultyLevel);
@@ -51,28 +56,6 @@ public class EditCourseActivity extends AppCompatActivity {
         editTextDuration = findViewById(R.id.editTextDuration);
         editTextPrice = findViewById(R.id.editTextPrice);
         editTextDescription = findViewById(R.id.editTextDescription);
-        databaseHelper = new DatabaseHelper(this);
-        BtnUpdate = findViewById(R.id.buttonUpdate);
-
-        courseID = getIntent().getIntExtra("yoga_course_id", -1);
-        loadClassDetails(courseID);
-        setUpTimePicker();
-        BtnUpdate.setOnClickListener(view -> validateAndSubmit());
-    }
-
-
-
-    private void loadClassDetails(int id) {
-        YogaCourse yogaCourse = databaseHelper.getYogaCourse(id);
-
-        editTextTime.setText(yogaCourse.getTime());
-        editTextCapacity.setText(yogaCourse.getCapacity()+"");
-        editTextDuration.setText(yogaCourse.getDuration() +"");
-        editTextPrice.setText(yogaCourse.getPrice()+"");
-        editTextDescription.setText(yogaCourse.getDescription());
-        spinnerDayOfWeek.setSelection(getSelectedPositionForWeek(yogaCourse.getDay()));
-        spinnerClassType.setSelection(getSelectedPositionForType(yogaCourse.getType()));
-        spinnerDifficultyLevel.setSelection(getSelectedPositionForLevel(yogaCourse.getLevel()));
     }
 
     private void setUpTimePicker() {
@@ -106,6 +89,7 @@ public class EditCourseActivity extends AppCompatActivity {
         timePickerDialog.show();
     }
 
+
     private void validateAndSubmit() {
         // Validate required fields
         String day = spinnerDayOfWeek.getSelectedItem().toString();
@@ -123,73 +107,57 @@ public class EditCourseActivity extends AppCompatActivity {
         }
 
         // Display entered details for confirmation
-        saveToDatabase(day, time, Integer.parseInt(capacity), Integer.parseInt(duration), Double.parseDouble(price), classType, level, editTextDescription.getText().toString());
+        showConfirmationDialog(day, time, capacity, duration, price, classType,level, editTextDescription.getText().toString());
+    }
+
+    private void showConfirmationDialog(String day, String time, String capacity, String duration, String price, String classType,String level, String description) {
+        // Show confirmation dialog or new activity
+        new AlertDialog.Builder(this)
+                .setTitle("Confirm Details")
+                .setMessage("Day: " + day + "\nTime: " + time + "\nCapacity: " + capacity +
+                        "\nDuration: " + duration + " minutes\nPrice: £" + price +
+                        "\nClass Type: " + classType + "\nLevel: " + level + "\nDescription: " + description)
+                .setPositiveButton("Confirm", (dialog, which) -> {
+                    // Save data to database
+                    saveToDatabase(day, time, Integer.parseInt(capacity), Integer.parseInt(duration), Double.parseDouble(price), classType, level, description);
+                })
+                .setNegativeButton("Edit", null)
+                .show();
     }
 
     private void saveToDatabase(String day, String time, int capacity, int duration, double price, String classType, String level, String description) {
         // Save class details to the SQLite database
         // Implementation of database insertion goes here
         // Add the course to the database
-        YogaCourse yogaCourse = new YogaCourse(courseID, day, time, capacity, duration, price, classType, level, description, false);
-        boolean isUpdateded = databaseHelper.updateCourse(courseID, yogaCourse);
-        if (isUpdateded) {
-            Toast.makeText(this, "Course updated successfully!", Toast.LENGTH_SHORT).show();
+        boolean isInserted = DBHelper.addCourseToDB(day, time, capacity, duration, price, classType, level, description, false);
+        if (isInserted) {
+            Toast.makeText(this, "Course added successfully!", Toast.LENGTH_SHORT).show();
             finish();  // Close activity and go back to the list
         } else {
-            Toast.makeText(this, "Failed to update course.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Failed to add course.", Toast.LENGTH_SHORT).show();
         }
     }
-
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.save_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection.
         Log.i("LOG", "search" + item.getItemId());
 
-        if (item.getItemId() == android.R.id.home) {
+        if(item.getItemId() == R.id.save) {
+            validateAndSubmit();
+            return true;
+        } else if (item.getItemId() == android.R.id.home) {
             finish(); // or perform any custom action
             return true;
         } else {
             return super.onOptionsItemSelected(item);
         }
 
-    }
-
-    private int getSelectedPositionForWeek(String week) {
-        if (week.equals("Monday")) {
-            return 0;
-        } else if (week.equals("Tuesday")) {
-            return 1;
-        }else if (week.equals("Wednesday")) {
-            return 2;
-        }else if (week.equals("Thursday")) {
-            return 3;
-        }else if (week.equals("Friday")) {
-            return 4;
-        }else if (week.equals("Saturday")) {
-            return 5;
-        }else {
-            return 6;
-        }
-    }
-
-    private int getSelectedPositionForType(String type) {
-        if (type.equals("Flow Yoga")) {
-            return 0;
-        }else if (type.equals("Aerial Yoga")) {
-            return 1;
-        }else {
-            return 2;
-        }
-    }
-
-    private int getSelectedPositionForLevel(String level) {
-        if (level.equals("Beginner")) {
-            return 0;
-        }else if (level.equals("Intermediate")) {
-            return 1;
-        }else {
-            return 2;
-        }
     }
 }

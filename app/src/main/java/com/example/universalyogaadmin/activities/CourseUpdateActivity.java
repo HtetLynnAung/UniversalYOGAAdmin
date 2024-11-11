@@ -19,7 +19,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import java.util.Calendar;
 import java.util.Locale;
 
-public class EditCourseActivity extends AppCompatActivity {
+public class CourseUpdateActivity extends AppCompatActivity {
 
     private Spinner spinnerDayOfWeek, spinnerClassType, spinnerDifficultyLevel;
 
@@ -32,7 +32,7 @@ public class EditCourseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_edit_course);
+        setContentView(R.layout.activity_course_update);
 
         getSupportActionBar().setTitle("Edit Class");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

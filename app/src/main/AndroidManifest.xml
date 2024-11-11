@@ -19,13 +19,13 @@
         android:theme="@style/Base.Theme.UniversalYogaAdmin"
         tools:targetApi="31">
         <activity
-            android:name=".activities.EditClassActivity"
+            android:name=".activities.ClassUpdateActivity"
             android:exported="false" />
         <activity
             android:name=".activities.SearchActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.EditCourseActivity"
+            android:name=".activities.CourseUpdateActivity"
             android:exported="false" />
         <activity
             android:name=".activities.CourseDetailActivity"

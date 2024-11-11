@@ -3,7 +3,6 @@ package com.example.universalyogaadmin.activities;
 import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.text.InputType;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -21,7 +20,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
-public class EditClassActivity extends AppCompatActivity {
+public class ClassUpdateActivity extends AppCompatActivity {
 
     private TextInputEditText editTextDate, editTextTeacher, editTextComment;
 
@@ -34,7 +33,7 @@ public class EditClassActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_edit_class);
+        setContentView(R.layout.activity_class_update);
 
         getSupportActionBar().setTitle("Edit Class");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

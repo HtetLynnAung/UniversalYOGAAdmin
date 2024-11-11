@@ -242,7 +242,7 @@ public class CourseDetailActivity extends AppCompatActivity implements ClassMana
     }
 
     private void navigateToEditActivity(){
-        Intent myIntent = new Intent(CourseDetailActivity.this, EditCourseActivity.class);
+        Intent myIntent = new Intent(CourseDetailActivity.this, CourseUpdateActivity.class);
         myIntent.putExtra("yoga_course_id", courseID);
         startActivity(myIntent);
     }
@@ -255,7 +255,7 @@ public class CourseDetailActivity extends AppCompatActivity implements ClassMana
 
     @Override
     public void upClass(int classID) {
-        Intent intent = new Intent(CourseDetailActivity.this, EditClassActivity.class);
+        Intent intent = new Intent(CourseDetailActivity.this, ClassUpdateActivity.class);
         intent.putExtra("yoga_course_id", courseID);
         intent.putExtra("yoga_class_id", classID);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

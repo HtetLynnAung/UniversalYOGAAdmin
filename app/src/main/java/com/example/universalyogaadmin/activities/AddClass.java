@@ -7,6 +7,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,13 +22,17 @@ import java.util.Map;
 
 public class AddClass extends AppCompatActivity {
 
-    private TextInputEditText editTextDate, editTextTeacher, editTextComment;
+    private TextInputEditText editTextComment;
 
     private int courseID = -1;
 
     private String dayOfWeekString = "Monday";
 
     private DBHelper DBHelper;
+
+    private EditText editTextDate, editTextTeacher;
+
+    private Button buttonSave;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,12 +52,15 @@ public class AddClass extends AppCompatActivity {
         loadClassDetails(courseID);
 
         setUpDatePickerActionToText();
+
+        buttonSave.setOnClickListener(view -> validateAndSubmit());
     }
 
     private void setupFindViewByIds() {
         editTextDate = findViewById(R.id.etDateOfClass);
         editTextTeacher = findViewById(R.id.etTeacher);
         editTextComment = findViewById(R.id.etComment);
+        buttonSave = findViewById(R.id.buttonSave);
     }
 
     private void loadClassDetails(int id) {
@@ -154,9 +163,7 @@ public class AddClass extends AppCompatActivity {
     }
 
     private void saveToDB(String date, String teacher, String comment) {
-        // Save class details to the SQLite database
-        // Implementation of database insertion goes here
-        // Add the course to the database
+
         boolean isInserted = DBHelper.addClass(courseID, date, teacher, comment, dayOfWeekString);
         if (isInserted) {
             Toast.makeText(this, "Class added successfully!", Toast.LENGTH_SHORT).show();
@@ -167,22 +174,12 @@ public class AddClass extends AppCompatActivity {
     }
 
     //Override methods
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.save_menu, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle item selection.
-        Log.i("LOG", "search" + item.getItemId());
 
-        if(item.getItemId() == R.id.save) {
-            validateAndSubmit();
-            return true;
-        } else if (item.getItemId() == android.R.id.home) {
+         if (item.getItemId() == android.R.id.home) {
             finish(); // or perform any custom action
             return true;
         } else {

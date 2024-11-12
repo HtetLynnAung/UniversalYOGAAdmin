@@ -28,13 +28,14 @@ public class CourseUpdateActivity extends AppCompatActivity {
     private DBHelper DBHelper;
     private Button btnUpdate;
     private int courseID = -1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_course_update);
 
-        getSupportActionBar().setTitle("Edit Class");
+        getSupportActionBar().setTitle("Edit Course");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         setupFindViewByIds();

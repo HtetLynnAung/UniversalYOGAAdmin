@@ -13,15 +13,18 @@
 
     <!-- Types of Class -->
     <string-array name="class_types">
-        <item>Flow Yoga</item>
-        <item>Aerial Yoga</item>
-        <item>Family Yoga</item>
+        <item>Power Yoga</item>
+        <item>Yin Yoga</item>
+        <item>Restorative  Yoga</item>
+        <item>Kundalini   Yoga</item>
     </string-array>
 
     <!-- Difficulty -->
     <string-array name="difficulty_levels">
-        <item>Beginner</item>
-        <item>Intermediate</item>
-        <item>Professional</item>
+        <item>Level 1</item>
+        <item>Level 2</item>
+        <item>Level 3</item>
+        <item>Level 4</item>
+        <item>Level 5</item>
     </string-array>
 </resources>

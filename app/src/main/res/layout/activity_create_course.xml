@@ -36,86 +36,38 @@
 
             <!-- Time of the Course -->
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textInputLayoutTimeOfCourse"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            <EditText
+                android:id="@+id/editTextTime"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp"
-                android:hint="@string/cc_time_of_course">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/editTextTime"
-                    android:layout_width="match_parent"
-                    android:inputType="time"
-                    android:layout_height="wrap_content"
-                    />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
+                android:inputType="time"
+                android:layout_height="wrap_content"/>
 
             <!-- Capacity -->
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textField"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            <EditText
+                android:id="@+id/editTextCapacity"
                 android:layout_width="match_parent"
+                android:inputType="number"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:hint="@string/cc_capacity">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/editTextCapacity"
-                    android:layout_width="match_parent"
-                    android:inputType="number"
-                    android:layout_height="wrap_content"
-                    />
-
-            </com.google.android.material.textfield.TextInputLayout>
+                android:hint="Number of Students"/>
 
             <!-- Duration -->
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textFieldDuration"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            <EditText
+                android:id="@+id/editTextDuration"
                 android:layout_width="match_parent"
+                android:inputType="number"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:hint="@string/cc_duration">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/editTextDuration"
-                    android:layout_width="match_parent"
-                    android:inputType="number"
-                    android:layout_height="wrap_content"
-                    />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
+                android:hint="Minutes"/>
 
             <!-- Price -->
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textFieldPrice"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            <EditText
+                android:id="@+id/editTextPrice"
                 android:layout_width="match_parent"
+                android:inputType="numberDecimal"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                app:endIconMode="custom"
-                app:endIconContentDescription="£"
-                app:endIconDrawable="@drawable/euro"
-                android:hint="@string/cc_price_per_class">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/editTextPrice"
-                    android:layout_width="match_parent"
-                    android:inputType="numberDecimal"
-                    android:layout_height="wrap_content"
-                    />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
+                android:hint="Price (Euro)"/>
             <!-- Type of Class -->
             <TextView
                 android:layout_width="wrap_content"
@@ -166,7 +118,18 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
+            <Button
+                android:id="@+id/buttonSave"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="SAVE"
+                android:backgroundTint="@color/primary"
+                android:textColor="@android:color/white"
+                android:layout_marginTop="16dp"/>
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="50dp"></View>
         </LinearLayout>
     </ScrollView>
 

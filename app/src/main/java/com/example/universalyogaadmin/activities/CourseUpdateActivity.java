@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -23,11 +24,15 @@ public class CourseUpdateActivity extends AppCompatActivity {
 
     private Spinner spinnerDayOfWeek, spinnerClassType, spinnerDifficultyLevel;
 
-    private TextInputEditText editTextTime, editTextCapacity, editTextDescription, editTextPrice, editTextDuration;
+    private TextInputEditText  editTextDescription;
 
     private DBHelper DBHelper;
+
     private Button btnUpdate;
+
     private int courseID = -1;
+
+    private EditText editTextTime, editTextCapacity, editTextPrice, editTextDuration;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

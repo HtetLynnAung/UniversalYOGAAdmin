@@ -11,45 +11,24 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:ignore="MissingConstraints">
+        tools:ignore="MissingConstraints"
+        android:padding="16dp">
 
         <!-- Date Of Class -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/filledTextDateOfClass"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+
+        <EditText
+            android:id="@+id/etDateOfClass"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:hint="@string/class_date_of_class">
+            android:hint="Class Date"
+            android:layout_marginBottom="12dp"/>
 
-            <!--this is the actual edit text which takes the input-->
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etDateOfClass"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/filledTextFieldTeacher"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        <EditText
+            android:id="@+id/etTeacher"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:hint="@string/class_teacher">
-
-            <!--this is the actual edit text which takes the input-->
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etTeacher"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
+            android:hint="Teacher Name"
+            android:layout_marginBottom="12dp"/>
 
         <!-- Comment -->
         <com.google.android.material.textfield.TextInputLayout
@@ -57,9 +36,7 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
             app:helperText="@string/class_optional"
             android:hint="@string/class_comment">
 
@@ -71,6 +48,17 @@
                 android:gravity="top" />
 
         </com.google.android.material.textfield.TextInputLayout>
+        <Button
+            android:id="@+id/buttonUpdate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Update"
+            android:backgroundTint="@color/primary"
+            android:textColor="@android:color/white"
+            android:layout_marginTop="16dp"/>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="50dp"></View>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

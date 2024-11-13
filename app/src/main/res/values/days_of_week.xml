@@ -13,6 +13,9 @@
 
     <!-- Types of Class -->
     <string-array name="class_types">
+        <item>Flow Yoga</item>
+        <item>Arial Yoga</item>
+        <item>Family  Yoga</item>
         <item>Power Yoga</item>
         <item>Yin Yoga</item>
         <item>Restorative  Yoga</item>

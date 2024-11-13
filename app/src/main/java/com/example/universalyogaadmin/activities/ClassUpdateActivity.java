@@ -6,6 +6,8 @@ import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -22,12 +24,14 @@ import java.util.Map;
 
 public class ClassUpdateActivity extends AppCompatActivity {
 
-    private TextInputEditText editTextDate, editTextTeacher, editTextComment;
+    private TextInputEditText  editTextComment;
 
     private int classID = -1;
     private int courseID = -1;
     private String dayOfWeekString = "Monday";
     private DBHelper DBHelper;
+    private EditText editTextDate, editTextTeacher;
+    private Button buttonUpdate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,12 +50,14 @@ public class ClassUpdateActivity extends AppCompatActivity {
         courseID = getIntent().getIntExtra("yoga_course_id", -1);
         loadClassDetails(classID);
         setUpDatePicker();
+        buttonUpdate.setOnClickListener(view -> validateAndSubmit());
     }
 
     private void setupFindViewByIds() {
         editTextDate = findViewById(R.id.etDateOfClass);
         editTextTeacher = findViewById(R.id.etTeacher);
         editTextComment = findViewById(R.id.etComment);
+        buttonUpdate = findViewById(R.id.buttonUpdate);
     }
 
     private void loadClassDetails(int id) {
@@ -168,19 +174,10 @@ public class ClassUpdateActivity extends AppCompatActivity {
     }
 
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.update_menu, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId() == R.id.save) {
-            validateAndSubmit();
-            return true;
-        } else if (item.getItemId() == android.R.id.home) {
+        if (item.getItemId() == android.R.id.home) {
             finish(); // or perform any custom action
             return true;
         } else {

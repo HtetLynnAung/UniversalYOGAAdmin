@@ -24,7 +24,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Day of the Week"
+                android:text="Day of the Week*"
                 android:textSize="16sp" />
 
             <Spinner
@@ -37,91 +37,48 @@
 
             <!-- Time of the Course -->
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textInputLayoutTimeOfCourse"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            <EditText
+                android:id="@+id/editTextTime"
                 android:layout_width="match_parent"
+                android:inputType="time"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp"
-                android:hint="@string/cc_time_of_course">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/editTextTime"
-                    android:layout_width="match_parent"
-                    android:inputType="time"
-                    android:layout_height="wrap_content"
-                    />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
+                android:layout_marginBottom="12dp"
+                android:hint="Time of Course*"/>
 
             <!-- Capacity -->
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textField"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            <EditText
+                android:id="@+id/editTextCapacity"
                 android:layout_width="match_parent"
+                android:inputType="number"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:hint="@string/cc_capacity">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/editTextCapacity"
-                    android:layout_width="match_parent"
-                    android:inputType="number"
-                    android:layout_height="wrap_content"
-                    />
-
-            </com.google.android.material.textfield.TextInputLayout>
+                android:hint="Number of Students*"
+                android:layout_marginBottom="12dp"/>
 
             <!-- Duration -->
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textFieldDuration"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            <EditText
+                android:id="@+id/editTextDuration"
                 android:layout_width="match_parent"
+                android:inputType="number"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:hint="@string/cc_duration">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/editTextDuration"
-                    android:layout_width="match_parent"
-                    android:inputType="number"
-                    android:layout_height="wrap_content"
-                    />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
+                android:hint="Minutes per Section*"
+                android:layout_marginBottom="12dp"/>
 
             <!-- Price -->
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textFieldPrice"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            <EditText
+                android:id="@+id/editTextPrice"
                 android:layout_width="match_parent"
+                android:inputType="numberDecimal"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                app:endIconMode="custom"
-                app:endIconContentDescription="£"
-                app:endIconDrawable="@drawable/euro"
-                android:hint="@string/cc_price_per_class">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/editTextPrice"
-                    android:layout_width="match_parent"
-                    android:inputType="numberDecimal"
-                    android:layout_height="wrap_content"
-                    />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
+                android:hint="Price* (Euro)"
+                android:layout_marginBottom="12dp"/>
             <!-- Type of Class -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Type of Class"
+                android:text="Type of Class*"
                 android:textSize="16sp" />
 
             <Spinner
@@ -132,12 +89,12 @@
                 android:entries="@array/class_types"
                 android:spinnerMode="dropdown"/>
 
-            <!-- Additional Field Example: Difficulty Level -->
+            <!-- Additional Field : Yoga Level -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_marginTop="16dp"
                 android:layout_height="wrap_content"
-                android:text="Difficulty Level"
+                android:text="Yoga Level"
                 android:textSize="16sp" />
 
             <Spinner

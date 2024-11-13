@@ -34,7 +34,7 @@
             android:name=".activities.AddClass"
             android:exported="false" />
         <activity
-            android:name=".activities.AddCourse"
+            android:name=".activities.CreateCourse"
             android:exported="false" />
         <activity
             android:name=".activities.MainActivity"

@@ -19,7 +19,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import java.util.Calendar;
 import java.util.Locale;
 
-public class CreateCourse extends AppCompatActivity {
+public class CreateCourseActivity extends AppCompatActivity {
 
     private Spinner spinnerDayOfWeek, spinnerClassType, spinnerDifficultyLevel;
 

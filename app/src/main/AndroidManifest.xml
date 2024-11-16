@@ -31,10 +31,10 @@
             android:name=".activities.CourseDetailActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.AddClass"
+            android:name=".activities.CreateClassActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.CreateCourse"
+            android:name=".activities.CreateCourseActivity"
             android:exported="false" />
         <activity
             android:name=".activities.MainActivity"

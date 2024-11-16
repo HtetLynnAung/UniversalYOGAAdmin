@@ -70,11 +70,11 @@ public class ClassUpdateActivity extends AppCompatActivity {
     }
 
     private void setUpDatePicker() {
-        // Disable direct input for time EditText
+
         editTextDate.setInputType(InputType.TYPE_NULL);
         editTextDate.setFocusable(false);
 
-        // Show TimePickerDialog when editTextTime is clicked
+
         editTextDate.setOnClickListener(v -> showDatePickerDialog() );
     }
 
@@ -85,7 +85,7 @@ public class ClassUpdateActivity extends AppCompatActivity {
         int month = calendar.get(Calendar.MONTH);
         int day = calendar.get(Calendar.DAY_OF_MONTH);
 
-        // Convert day string to corresponding Calendar constant
+
         int dayOfWeek = getDayOfWeekFromString(dayOfWeekString);
         if (dayOfWeek == -1) {
             Toast.makeText(this, "Invalid day of week", Toast.LENGTH_SHORT).show();
@@ -111,13 +111,13 @@ public class ClassUpdateActivity extends AppCompatActivity {
                 },
                 year, month, day);
 
-        // Add a listener to filter the dates based on the day of the week
+
         datePickerDialog.getDatePicker().init(year, month, day, (view, year1, monthOfYear, dayOfMonth) -> {
             Calendar selectedCalendar = Calendar.getInstance();
             selectedCalendar.set(year1, monthOfYear, dayOfMonth);
             int selectedDayOfWeek = selectedCalendar.get(Calendar.DAY_OF_WEEK);
 
-            // If the selected day is not the desired day, automatically move to the next matching day
+
             if (selectedDayOfWeek != dayOfWeek) {
                 while (selectedDayOfWeek != dayOfWeek) {
                     selectedCalendar.add(Calendar.DAY_OF_MONTH, 1);
@@ -136,7 +136,7 @@ public class ClassUpdateActivity extends AppCompatActivity {
         datePickerDialog.show();
     }
 
-    // Helper function to map day string to Calendar constant
+
     private int getDayOfWeekFromString(String day) {
         Map<String, Integer> dayMap = new HashMap<>();
         dayMap.put("Sunday", Calendar.SUNDAY);

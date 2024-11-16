@@ -173,40 +173,40 @@ public class CourseDetailActivity extends AppCompatActivity implements ClassMana
             navigateToAddClass();
         });
 
-        // Set click listener for the submit button
+
         buttonPublish.setOnClickListener(view -> checkValidationAndSummitToDB());
 
-        // edit button click listener
+
         buttonEdit.setOnClickListener(view -> navigateToEditActivity());
-        // delete button click listener
+
         buttonDel.setOnClickListener(view -> createDeleteAlertDialog());
 
     }
 
     private void navigateToAddClass() {
-        Intent myIntent = new Intent(CourseDetailActivity.this, AddClass.class);
+        Intent myIntent = new Intent(CourseDetailActivity.this, CreateClassActivity.class);
         myIntent.putExtra("yoga_course_id", courseID );
         this.startActivity(myIntent);
     }
 
     private void createDeleteAlertDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        // Add the buttons.
+
         builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                // User taps OK button.
+
                 finish();
                 deleteObservation();
             }
         });
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                // User cancels the dialog.
+
                 dialog.dismiss();
             }
         });
 
-        // Create the AlertDialog.
+
         AlertDialog dialog = builder.create();
         dialog.setTitle("Delete");
         dialog.setMessage("Do you want to delete this course?");
@@ -219,7 +219,7 @@ public class CourseDetailActivity extends AppCompatActivity implements ClassMana
 
     private void createAlertDialog(int classID) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-// Add the buttons.
+
         builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // User taps OK button.
@@ -247,7 +247,7 @@ public class CourseDetailActivity extends AppCompatActivity implements ClassMana
         startActivity(myIntent);
     }
 
-    //Override methods
+
     @Override
     public void delClass(int classID) {
         createAlertDialog(classID);
@@ -266,7 +266,7 @@ public class CourseDetailActivity extends AppCompatActivity implements ClassMana
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection.
         if (item.getItemId() == android.R.id.home) {
-            finish(); // or perform any custom action
+            finish();
             return true;
         } else {
             return super.onOptionsItemSelected(item);

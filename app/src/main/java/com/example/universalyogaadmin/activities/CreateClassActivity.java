@@ -3,9 +3,6 @@ package com.example.universalyogaadmin.activities;
 import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.text.InputType;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,7 +17,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
-public class AddClass extends AppCompatActivity {
+public class CreateClassActivity extends AppCompatActivity {
 
     private TextInputEditText editTextComment;
 

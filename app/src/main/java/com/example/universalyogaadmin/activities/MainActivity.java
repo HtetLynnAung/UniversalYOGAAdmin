@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void setOnClickListener() {
         fabAddCourse.setOnClickListener(view -> {
-            Intent intent = new Intent(this, CreateCourse.class);
+            Intent intent = new Intent(this, CreateCourseActivity.class);
             startActivity(intent);
         });
     }

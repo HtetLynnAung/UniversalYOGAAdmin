@@ -22,7 +22,7 @@
         <item>Kundalini   Yoga</item>
     </string-array>
 
-    <!-- Difficulty -->
+    <!-- Level -->
     <string-array name="difficulty_levels">
         <item>Level 1</item>
         <item>Level 2</item>

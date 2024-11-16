@@ -7,7 +7,7 @@
     android:paddingTop="?attr/actionBarSize"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.AddClass">
+    tools:context=".activities.CreateClassActivity">
 
     <LinearLayout
         android:orientation="vertical"
